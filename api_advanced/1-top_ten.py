@@ -20,15 +20,15 @@ def top_ten(subreddit):
 
     if r.status_code == 200:
         req = r.json()
-        data = req.get('data')
-        children = data.get('children')
+        data = req.get(data)
+        children = data.get(children)
         if data is None or children is None:
             print(None)
             return
         else:
             for post in children:
-                post_data = post.get('data')
-                title = post_data.get('title')
+                post_data = post.get(data)
+                title = post_data.get(title)
                 print(title)
     else:
         print(None)
