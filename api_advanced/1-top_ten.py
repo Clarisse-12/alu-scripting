@@ -23,11 +23,13 @@ def top_ten(subreddit):
         data = req.get('data')
         children = data.get('children')
         if data is None or children is None:
-            print('None')
+            print(None)
+            return
         else:
             for post in children:
                 post_data = post.get('data')
                 title = post_data.get('title')
                 print(title)
     else:
-        print('None')
+        print(None)
+        return
