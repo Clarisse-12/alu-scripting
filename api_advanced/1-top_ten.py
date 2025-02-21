@@ -1,48 +1,31 @@
 #!/usr/bin/python3
+"""Write a function that queries the Reddit API
 """
-Reddit API Query Script
 
-This module contains a function to query the Reddit API and print the
-titles of the first 10 hot posts listed for a given subreddit.
-
-Functions:
-    - top_ten(subreddit): Prints the top 10 hot post titles.
-"""
 
 import requests
 
 
 def top_ten(subreddit):
     """
-    Queries the Reddit API and prints the titles of the first 10 hot posts.
-
-    Args:
-        subreddit (str): The name of the subreddit to query.
-
-    Returns:
-        None: Prints the titles or "None" if the subreddit is invalid.
+    function that queries the Reddit API and prints the titles of the
+    first 10 hot posts listed for a given subreddit.
     """
-    if not subreddit or not isinstance(subreddit, str):
-        print(None)  
-        return
 
-    headers = {'User-Agent': 'CustomUserAgent/1.0'} 
-    url = f'https://www.reddit.com/r/{subreddit}/hot.json'
+    headers = {'User-Agent': 'CustomBot/1.0'} 
     params = {'limit': 10}  
+    url = 'https://www.reddit.com/r/{}/hot.json'.format(subreddit)  
 
-    try:
-        response = requests.get(url, headers=headers, params=params, allow_redirects=False)
-        
-        if response.status_code == 200:
-            posts = response.json().get('data', {}).get('children', [])
-            
-            if not posts:
-                print(None) 
-            
-            for post in posts:
-                print(post.get('data', {}).get('title', "Unknown Title"))
-        else:
-            print(None) 
+    response = requests.get(url, headers=headers, params=params, allow_redirects=False)
 
-    except requests.RequestException:
+    if response.status_code == 200:
+        hot_posts = response.json().get('data', {}).get('children', [])  
+
+        if not hot_posts:  
+            print(None)
+            return
+
+        for post in hot_posts:
+            print(post.get('data', {}).get('title', "Unknown Title")) 
+    else:
         print(None)  
