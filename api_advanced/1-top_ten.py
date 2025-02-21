@@ -13,19 +13,31 @@ def top_ten(subreddit):
     """
 
     headers = {'User-Agent': 'CustomBot/1.0'} 
-    params = {'limit': 10}  
-    url = 'https://www.reddit.com/r/{}/hot.json'.format(subreddit)  
+    params = {'limit': 10} 
+    url = 'https://www.reddit.com/r/{}/hot.json'.format(subreddit) 
 
     response = requests.get(url, headers=headers, params=params, allow_redirects=False)
 
     if response.status_code == 200:
-        hot_posts = response.json().get('data', {}).get('children', [])  
+        try:  
+            data = response.json()
+            hot_posts = data.get('data', {}).get('children', [])
 
-        if not hot_posts:  
+            if not hot_posts:
+                print(None)  
+                return
+
+            for post in hot_posts:
+                title = post.get('data', {}).get('title')
+                if title: 
+                    print(title)
+                else:
+                    print("Unknown Title") 
+
+        except (ValueError, KeyError):
             print(None)
             return
 
-        for post in hot_posts:
-            print(post.get('data', {}).get('title', "Unknown Title")) 
     else:
-        print(None)  
+        print(None) 
+        return 0
